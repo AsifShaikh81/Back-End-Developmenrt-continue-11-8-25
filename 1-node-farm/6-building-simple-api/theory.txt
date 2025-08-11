@@ -1,0 +1,29 @@
+1)what is __dirname in node js?
+ In Node.js, __dirname is a global variable that represents the absolute path of the directory that contains the currently executing file.
+
+ __dirname ek special variable hota hai Node.js mein
+Jo tumhare current file ka folder ka full path batata hai.
+
+example:
+Socho tumhari file yeh jagah pe hai:
+==>C:\Users\Asif\Projects\app.js
+
+Agar tum console.log(__dirname); likhoge app.js ke andar, output hoga:
+==>C:\Users\Asif\Projects
+
+
+🔁 What is JSON?
+JSON (JavaScript Object Notation) is a way to store and exchange data in a text format. It looks like a JavaScript object but is always a string.
+
+🧠 1. JSON.stringify()
+🔽 Converts: JavaScript object ➡️ JSON string
+
+🧠 2. JSON.parse()
+🔼 Converts: JSON string ➡️ JavaScript object
+
+⚠️ Quick Tip:
+JSON.stringify() = Think "Send" (convert to string)
+JSON.parse() = Think "Receive" (convert string to object)
+
+
+
