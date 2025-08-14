@@ -9,7 +9,7 @@ app.listen(port, () => {
   console.log(`App running on ${port}`);
 });
 
-//created all http handlers
+//created all http/route handlers
 const getTours = (req, res) => {
   res.status(200).json({
     status: 'success',
