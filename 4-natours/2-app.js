@@ -12,7 +12,7 @@ app.listen(port, () => {
 });
 
 app.get('/api/v1/tours', (req, res) => {
-  res.status(202).json({
+  res.status(200).json({
     //Formating json to jsend before sending data to client
     //key:  value
     status: 'success',
