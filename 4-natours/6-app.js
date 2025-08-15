@@ -1,4 +1,4 @@
-//Topic: Refactoring Our Routes
+//Topic: Handling DELETERequests
 
 const fs = require('fs');
 

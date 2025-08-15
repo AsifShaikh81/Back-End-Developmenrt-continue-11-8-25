@@ -134,5 +134,6 @@
     "images": ["tour-9-1.jpg", "tour-9-2.jpg", "tour-9-3.jpg"],
     "startDates": ["2021-12-16,10:00", "2022-01-16,10:00", "2022-12-12,10:00"]
   },
-  { "id": 9, "name": "Asif Shaikh", "duration": "1 month", "members": "5" }
+  { "id": 9, "name": "Afifa", "duration": "1 month", "members": "5" },
+  { "id": 10, "name": "asif", "duration": "1 month", "members": "5" }
 ]

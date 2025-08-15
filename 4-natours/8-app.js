@@ -3,7 +3,7 @@
 //server created
 const express = require('express');
 const app = express();
-// app.use(express.json());f
+// app.use(express.json());
 
 const port = 4000;
 app.listen(port, () => {
@@ -14,7 +14,6 @@ app.listen(port, () => {
 //always define above the other middlewares and before the routes.
 //how it works:
 // incoming req ==> middleware1 ==> middleware2 ==> middleware3 ==> response. Check notebook for better understanding.
-
 app.use((req, res, next) => {
   console.log('hello from middleware 👋');
   next(); //always define next(), if not it req/res cycle will be stuck and never send res back to client
@@ -59,5 +58,6 @@ const deleteTours = (req, res) => {
   });
 };
 
+//ROUTES
 app.route('/api/v1/tours').get(getTours).post(postTours);
 app.route('/api/v2/tours/:id').put(patchTours).delete(deleteTours);
