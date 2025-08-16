@@ -1,34 +1,7 @@
 const express = require('express');
-const getAllUsers = (req, res) => {
-  res.status(500).json({
-    status: 'internal server issue',
-    message: 'route not defined yet',
-  });
-};
-const getUsers = (req, res) => {
-  res.status(500).json({
-    status: 'internal server issue',
-    message: 'route not defined yet',
-  });
-};
-const postUsers = (req, res) => {
-  res.status(500).json({
-    status: 'internal server issue',
-    message: 'route not defined yet',
-  });
-};
-const patchUsers = (req, res) => {
-  res.status(500).json({
-    status: 'internal server issue',
-    message: 'route not defined yet',
-  });
-};
-const deleteUsers = (req, res) => {
-  res.status(500).json({
-    status: 'internal server issue',
-    message: 'route not defined yet',
-  });
-};
+// const UserControllers = require('../Controllers/userControllers') // importing controllers
+const {getAllUsers,postUsers,getUsers,patchUsers,deleteUsers} = require('../Controllers/userControllers') // importing controllers, another way of imporitng controllers called 'destructuring import'
+
 
 const router = express.Router();
 
