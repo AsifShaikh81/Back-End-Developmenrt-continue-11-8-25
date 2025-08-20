@@ -8,18 +8,28 @@ dotenv.config({ path: './config.env' });
 const express = require('express');
 const morgan = require('morgan');
 
-const mongoose = require('mongoose'); // require mongoose pkc
+const mongoose = require('mongoose'); // require mongoose package
 
-const DB = process.env.D_STRING.replace('<PASSWORD>',process.env.D_PASSWORD)
+//repalacing password in string
+const DB = process.env.D_STRING.replace('<PASSWORD>', process.env.D_PASSWORD);
 
- // connnecting database
-mongoose.connect(DB, {
-  useNewUrlParser: true,
-  useCreateIndex:true,
-  useFindAndModify:false
-  
-}).then(()=> console.log('database connected')
-)// using then bcz its return promise
+// connnecting database
+mongoose
+  .connect(DB, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  })
+  .then(() => console.log('database connected')); // using then bcz its return promise
+
+
+//creating document
+// const DOCUMENT = new Tour({
+//   name: 'The forest Hiker',
+//   price: 997,
+// });
+
+
 
 const app = express();
 //*config.env
@@ -45,4 +55,3 @@ app.use('/api/v1/users', UsersRoute);
 app.use('/api/v1/tours', ToursRoute);
 
 // module.exports = app // here exporting  'const app = express();'
-

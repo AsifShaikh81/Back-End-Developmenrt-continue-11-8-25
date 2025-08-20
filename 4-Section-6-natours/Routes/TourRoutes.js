@@ -11,5 +11,5 @@ router
   .get(TourControllers.getToursById)
   .patch(TourControllers.patchTours)
   .delete(TourControllers.deleteTours);
-router.param('id',TourControllers.checkID) //param middleware
+//router.param('id',TourControllers.checkID) //param middleware
 module.exports = router;
