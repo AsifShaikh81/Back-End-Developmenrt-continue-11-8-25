@@ -1,5 +1,5 @@
 {
-  "name": "natours",
+  "name": "using-mongodb-with-mongoose",
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
@@ -9,7 +9,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "morgan": "^1.10.1"
   },

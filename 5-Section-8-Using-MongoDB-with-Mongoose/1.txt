@@ -1,0 +1,23 @@
+Topic: Connecting Our Database with the Express App
+
+1. get the string from mongodb atlas 'https://cloud.mongodb.com/v2/68a4a80f785f650de3768a8b#/overview'
+
+2. in ur congig.env file paste the string and make sure to replace db_password
+
+3.in ur server.js(a file where u creating ur server), follow below code
+--------code--------------------------
+  const mongoose = require('mongoose'); // require mongoose pkc
+  const DB = process.env.D_STRING.replace('<PASSWORD>',process.env.D_PASSWORD)
+
+ // connnecting database
+mongoose.connect(DB, {
+  useNewUrlParser: true,
+  useCreateIndex:true,
+  useFindAndModify:false
+}).then(()=> console.log('database connected')
+)// using then bcz its return promise
+--------code--------------------------
+
+4. run ur sever 
+
+note: before doing all these steps install mongoose ==> npm i mongoose

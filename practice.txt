@@ -1,0 +1,74 @@
+//topic: param middleware
+
+const fs = require('fs');
+
+const express = require('express');
+const app = express();
+const morgan = require('morgan');
+
+app.use(express.json());
+app.use(morgan('dev'));
+// app.use(param);
+
+const port = 5000;
+app.listen(port, () => {
+  console.log(`app running on port ${port}`);
+});
+
+// ✅ Load data from file
+const tours = JSON.parse(fs.readFileSync('./starter/dev-data/data/tours-simple.json'));
+
+// param middleware
+// Jab bhi koi :id param route hit hoga, ye middleware chalega
+// jab param middleware use kar rahe hoo tab 'value' object dena zaruri hai kyu ki useme param ki value store hogi
+// ✅ Param middleware
+const paramMiddle = (req, res, next, value) => {
+  console.log('👉 Param middleware running with id:', value);
+
+ 
+
+  if (!value) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+
+  // save data to request object (custom property)
+  req.tour = tour;
+  next();
+};
+
+//controller
+const getAllUser = (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    data: tours,
+  });
+};
+const getById = (req, res) => {
+  // yaha pe logoc likhne ki zarurat nahi kyu already param middleware mein likh diya
+  console.log('👉 From controller:', req.tour);
+  res.status(200).json({
+    status: 'success',
+    data: req.data,
+  });
+};
+
+//route
+app.param('/:id', paramMiddle);
+const router = express.Router();
+
+router.route('/').get(getAllUser);
+router.route('/:id').get(getById);
+app.use('/users', router);
+
+// param middleware kya hota hai?
+
+// Jab tum apne URL me koi parameter (jaise :id, :userId, :postId) use karte ho, to tum us parameter ke liye middleware logic likh sakte ho aur woh logic sirf uss param ke liye kam karega.
+// Isse fayda ye hota hai ki har route jisme wo param use ho raha hai, uske liye ek hi jagah pe logic run kar sakte ho baar baar logic ko haar jagah repeat karne ki zarurat nahi
+
+//symtax
+//app.param(paramName, callback)
+//paramName → jo parameter tum URL me use kar rahe ho (jaise "id")
+//callback → ek function jo tab chalega jab wo parameter detect hoga.
