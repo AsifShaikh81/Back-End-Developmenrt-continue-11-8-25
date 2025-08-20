@@ -1,0 +1,7 @@
+post: creat, post http method can use to send data from client to server 
+get: read
+update: put,patch  put=>update entire data, patch=>update only small data inside in it 
+delete : delete
+
+CRUD stands for:
+Create,Read,Update,Delete
