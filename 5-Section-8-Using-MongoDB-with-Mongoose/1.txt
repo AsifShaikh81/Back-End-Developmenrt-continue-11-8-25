@@ -17,6 +17,15 @@ mongoose.connect(DB, {
 }).then(()=> console.log('database connected')
 )// using then bcz its return promise
 --------code--------------------------
+--------code to connect local database--------------------------
+  const mongoose = require('mongoose'); // require mongoose pkc
+ 
+
+ // connnecting database
+ const DB = process.env.D_LOCAL // check congig.env
+mongoose.connect(DB).then(()=> console.log('database connected')
+)// using then bcz its return promise
+--------code to connect local database--------------------------
 
 4. run ur sever 
 

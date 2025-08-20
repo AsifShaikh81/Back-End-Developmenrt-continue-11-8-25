@@ -1,0 +1,17 @@
+what is mongoDB?
+*MongoDB is a database.
+*Just like you save notes in a notebook 📒, MongoDB saves data in collections (like folders).
+*Inside collections, data is stored as documents (like pages in the notebook).
+*Each document is written in JSON-like format (key–value pairs).
+
+what is mongoose?   
+*Mongoose is a tool (a library for Node.js) that helps you work with MongoDB easily.
+*Without Mongoose, you’d have to write a lot of complex MongoDB code.
+*With Mongoose, you can:
+   *Create a Schema (like a blueprint of your data)
+   *Validate data (make sure only correct data is saved)
+    *Easily connect, save, update, and delete data
+
+In short:
+MongoDB = Database where data is stored.
+Mongoose = Helper/Translator that makes talking to MongoDB in Node.js much easier.
