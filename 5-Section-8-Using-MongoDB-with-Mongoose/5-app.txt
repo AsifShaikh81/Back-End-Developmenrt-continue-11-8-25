@@ -1,0 +1,40 @@
+//Topic:89. Another Way of Creating Documents
+        90. Reading Documents
+        91. Updating Documents
+        92. Deleting Documents
+
+//creating schema
+const schema = new.schema({
+    name:String,
+    price:Number,
+    rating:Number
+})
+
+//creating model
+creat modell = new.model('model',schema)
+
+//--------main focus in this topic-------
+// creating Documents
+//we use to create document like this 
+const doc = new model({
+    name:'Asif'
+    price:500,
+    rating:4.5
+})
+//another way to create document
+<modelName>.<MethodName>()
+ex: modell.create() --> create(): to create data, its like http post() method
+ex: modell.find() --> find(): to get all data, its like http get() method
+ex: modell.findOne() --> findOne(): to get data by id, 
+ex: modell.findById() --> findById(): to get data by id, 
+find() = findById() 
+ex: modell.findById() --> findById(): to get data by id, 
+
+ex: modell.findByIdAndUpdate() --> findByIdAndUpdate(): update by id 
+//syntax: <modelName>.findByIdAndUpdate(id, updateValue, option) 
+
+ex: modell.findByIdAndDelete() --> findByIdAndUpdate(): delete by id 
+//syntax:  <modelName>.findByIdAndDelete(id) 
+
+note: for better understanding check tourControllers-DB.js file
+https://mongoosejs.com/docs/queries.html
