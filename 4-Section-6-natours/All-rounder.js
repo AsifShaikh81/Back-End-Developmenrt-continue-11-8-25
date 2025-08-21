@@ -86,7 +86,7 @@ const getAllUsers = (req, res) => {
     message: 'route not defined yet',
   });
 };
-const getUsers = (req, res) => {
+const getUsersById = (req, res) => {
   res.status(500).json({
     status: 'internal server issue',
     message: 'route not defined yet',
@@ -118,7 +118,7 @@ const ToursRoute = express.Router();
 app.use('/api/v1/users', UsersRoute);
 app.use('/api/v1/tours', ToursRoute);
 UsersRoute.route('/').get(getAllUsers).post(postUsers);
-UsersRoute.route('/:id').get(getUsers).patch(patchUsers).delete(deleteUsers);
+UsersRoute.route('/:id').get(getUsersById).patch(patchUsers).delete(deleteUsers);
 
 ToursRoute.route('/').get(getAllTours).post(postTours);
 ToursRoute.route('/:id').get(getToursById).patch(patchTours).delete(deleteTours);

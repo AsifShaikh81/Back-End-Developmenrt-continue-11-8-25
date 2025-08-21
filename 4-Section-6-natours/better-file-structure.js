@@ -48,10 +48,12 @@ app.listen(port, () => {
 });
 
 //routes
-const ToursRoute = require('./Routes/TourRoutes'); //importing tour route module
+//const ToursRoute = require('./Routes/TourRoutes'); importing tour route module
+const ToursRouteDB = require('./Routes/TourRoutes-DB'); //importing tour route module - DB
 const UsersRoute = require('./Routes/UserRoutes'); // importing user route router
 
+// app.use('/api/v1/tours', ToursRoute);
+app.use('/api/v1/tours', ToursRouteDB); //--> DB
 app.use('/api/v1/users', UsersRoute);
-app.use('/api/v1/tours', ToursRoute);
 
 // module.exports = app // here exporting  'const app = express();'
