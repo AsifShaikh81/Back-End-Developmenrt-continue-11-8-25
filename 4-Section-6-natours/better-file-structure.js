@@ -22,14 +22,11 @@ mongoose
   })
   .then(() => console.log('database connected')); // using then bcz its return promise
 
-
 //creating document
 // const DOCUMENT = new Tour({
 //   name: 'The forest Hiker',
 //   price: 997,
 // });
-
-
 
 const app = express();
 //*config.env
@@ -41,12 +38,6 @@ app.use(express.json());
 //static files
 app.use(express.static(`${__dirname}/starter/public`));
 
-//*config.env
-const port = process.env.PORT || 3000; //process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`App running on ${port}`);
-});
-
 //routes
 //const ToursRoute = require('./Routes/TourRoutes'); importing tour route module
 const ToursRouteDB = require('./Routes/TourRoutes-DB'); //importing tour route module - DB
@@ -57,3 +48,9 @@ app.use('/api/v1/tours', ToursRouteDB); //--> DB
 app.use('/api/v1/users', UsersRoute);
 
 // module.exports = app // here exporting  'const app = express();'
+
+//*config.env
+const port = process.env.PORT || 3000; //process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`App running on ${port}`);
+});

@@ -1,0 +1,58 @@
+94. Importing Development Data
+here we creating a script to automatically import data from jason file to database
+
+const dotenv = require('dotenv');
+
+dotenv.config({ path: './config.env' });
+// console.log(process.env);
+
+const fs = require('fs');
+const morgan = require('morgan');
+
+const mongoose = require('mongoose'); // require mongoose package
+
+//repalacing password in string
+const DB = process.env.D_STRING.replace('<PASSWORD>', process.env.D_PASSWORD);
+
+// connnecting database
+mongoose
+  .connect(DB, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  })
+  .then(() => console.log('database connected')); 
+
+  //Reading data 
+  const readFile =JSON.parse(fs.readFileSync(`${__dirname}/tour-simple.json`))
+
+  //IMPORT DATA TO DATABASE
+  const importData = async ()=>{
+    try{
+    await Tour.create(readFile) 
+    console.log('data successfully loaded')
+    process.exit() // it will forcefully exit after above operations executed
+    } catch (err) {
+        console.log(err)
+    }
+  }
+
+  // DELETE ALL THE DATA IN DATABASE
+  const deleteData = async () =>{
+       try{
+    await Tour.deleteMany() 
+    console.log('data successfully loaded')
+    process.exit() // it will forcefully exit after above operations executed
+    } catch (err) {
+        console.log(err)
+    }
+  }
+
+  console.log(process.argv)
+
+//to understand if else check ' console.log(process.argv)' in console
+  if(process.argv[2] === '--import'){
+    importData()
+  } else if (process.argv[2] === 'delete'){
+   deleteData()
+  }

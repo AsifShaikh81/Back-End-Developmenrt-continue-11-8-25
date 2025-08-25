@@ -39,7 +39,8 @@ const schema2 = new mongoose.Schema({
   },
 });
 
-// *creating model
+// *creating model/collection
+
 const MODEL = mongoose.model('MODEL', schema2);
 
 //*syntax
