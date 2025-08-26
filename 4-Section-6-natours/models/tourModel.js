@@ -1,4 +1,5 @@
 const mongoose = require('mongoose'); // require mongoose package
+const slugify = require('slugify')
 //creating Schema
 const tourSchema = new mongoose.Schema({
   name: {
@@ -6,6 +7,7 @@ const tourSchema = new mongoose.Schema({
     required: [true, 'name cannob me empty'],
     trim: true, //trime remove white spaces
   },
+  slug:String ,// for DOCUMENT MIDDLEWARE
   rating: {
     type: Number,
     default: 4.8,
@@ -57,7 +59,38 @@ const tourSchema = new mongoose.Schema({
   },
 
   startDates: [Date],
+
+}, 
+// ---------virtual---------
+{
+  toJSON: {virtuals:true},
+  toObject:{virtuals:true}
 });
+
+tourSchema.virtual('durationweek').get(function () {
+  return this.duration / 7;
+  
+})
+// ---------virtual---------
+//------DOCUMENT MIDDLEWARE-------
+// Pre middleware (runs BEFORE the document is saved in DB)
+tourSchema.pre('save', function (next) {
+    // 'this' points to the current document in out cas 'tourSchems'
+    this.slug = slugify(this.name,{lower:true})
+    next() // move to the next middleware
+})
+
+// Post middleware (runs AFTER the document is saved in DB)
+tourSchema.post('save',function (doc,next) {
+     // 'doc' is the saved document
+    console.log(doc);
+    next();
+    
+    
+})
+//------DOCUMENT MIDDLEWARE-------
+
+
 //creating model//collection
 const Tour = mongoose.model('Tour', tourSchema);
 
