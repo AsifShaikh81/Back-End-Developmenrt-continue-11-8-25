@@ -5,10 +5,10 @@ const TourControllersDB = require('../Controllers/tourControllers-DB.js'); //imp
 const router = express.Router();
 //TourControllers.checkBody is param middleware define befoe creating that is before TourControllers.postTours
 
+router.route('/').get(TourControllersDB.getAllTours).post(TourControllersDB.postTours);
 router.route('/top-5-cheap').get(TourControllersDB.aliasTopTours, TourControllersDB.getAllTours);
 router.route('/tour-stats').get(TourControllersDB.getTourStats);
 router.route('/monthly-plan/:YEAR').get(TourControllersDB.getMonthlyPlan);
-router.route('/').get(TourControllersDB.getAllTours).post(TourControllersDB.postTours);
 router
   .route('/:ID')
   .get(TourControllersDB.getToursById)

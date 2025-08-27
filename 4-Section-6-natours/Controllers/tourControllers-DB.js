@@ -20,7 +20,7 @@ exports.getAllTours = async (req, res) => {
     // -----------TOPIC-95-99-------------------
 
     // * --------filtering,sorting,field limiting,pagination using as a class-------
-    // BUILD QUERY
+    // BUILD QUERY  
     /*  1A) Filtering
     const queryObj = { ...req.query }; // storing query object
     const excludedFields = ['page', 'sort', 'limit', 'fields']; // a query/fields we want to delete/exclude
@@ -33,6 +33,7 @@ exports.getAllTours = async (req, res) => {
     console.log(req.query, JSON.parse(qStr));
 
     let query = Tour.find(JSON.parse(qStr)); // convert 'req.query' a js object to string */
+    
 
     //!note req.params → comes from route parameters like /tours/:id
     //!req.query → comes from query string like ?sort=-price
@@ -103,7 +104,11 @@ exports.getAllTours = async (req, res) => {
     // const query= Tour.find(quryobj)
     //EXECUTE QUERY
     //*----------------------------------query-------queryStr--
-    const features = new ApiFeatures(Tour.find(), req.query).filter().sort().limitFields().paginate();
+    const features = new ApiFeatures(Tour.find(), req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
     const tours = await features.query;
     // const tours = await query;
     // * --------filtering,sorting,field limiting,pagination using as a class-------

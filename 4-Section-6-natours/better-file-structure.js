@@ -47,6 +47,41 @@ const UsersRoute = require('./Routes/UserRoutes'); // importing user route route
 app.use('/api/v1/tours', ToursRouteDB); //--> DB
 app.use('/api/v1/users', UsersRoute);
 
+// sec 9 lect 112:Handlin Unhandled Routes
+/* app.all('*', (req,res,next)=>{
+  res.status(404).json({
+    status: 'fail',
+    message: `Can't find ${req.originalUrl} on this server!`
+  });
+}) */
+// sec 9 lect 112:Handlin Unhandled Route
+
+// lect 114. Implementing a Global Error Handling Middleware
+// i created this middleware to create error
+app.all('*', (req, res, next) => {
+  //-----------------------------err.message
+  const err = new Error(`Can't find ${req.originalUrl} on this server!`);
+  err.statusCode = 404;
+  err.status = 'fail';
+  next(err) 
+});
+// i created this middleware to create error
+
+// ---main global error handler
+app.use((err, req, res, next) => {
+  //------------------  404
+  err.statusCode = err.statusCode || 500;
+  //------------- 'fail'
+  err.status = err.status || 'error';
+  
+  res.status(err.statusCode).json({
+    status: err.status,
+    message: err.message,
+  });
+});
+// ---main global error handler
+// lect 114. Implementing a Global Error Handling Middleware
+
 // module.exports = app // here exporting  'const app = express();'
 
 //*config.env
