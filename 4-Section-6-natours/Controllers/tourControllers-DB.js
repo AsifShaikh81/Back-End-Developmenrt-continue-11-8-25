@@ -235,9 +235,9 @@ exports.getTourStats = async (req, res) => {
         //------new field name
         $sort: { avgPrice: 1 }, // here we using new field name 'avgPrice' not old field name 'price' kyu ki ye stage by stage work karta hai
       },
-      {
-        $match: { _id: { $ne: 'EASY' } }, // u can repeat stages
-      },
+      // {
+      //   $match: { _id: { $ne: 'EASY' } }, // u can repeat stages
+      // },
     ]);
     console.log('🔥 Stats from DB:', stats);
     res.status(200).json({
