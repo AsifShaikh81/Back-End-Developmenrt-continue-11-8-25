@@ -6,6 +6,7 @@ const tourSchema = new mongoose.Schema(
   {
     name: {
       type: String,
+      unique:true,
       required: [true, 'name cannob me empty'],
       trim: true, //trime remove white spaces
       maxlength: [40, 'A tour name must have less or equal then 40 characters'],
