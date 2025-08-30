@@ -1,4 +1,11 @@
 //TopicBette structure
+// lect 123
+process.on('uncaughtException',err=>{
+   console.log(err.name,err.message);
+  console.log('unhandled rejection 💥 shutting down..');
+  process.exit(1)
+
+})
 //*config.env
 const dotenv = require('dotenv');
 
@@ -9,7 +16,8 @@ const express = require('express');
 const morgan = require('morgan');
 
 const mongoose = require('mongoose'); // require mongoose package
-
+const AppError =require('./utils/appError') // lect 115
+const globalErrorHandler = require('./Controllers/errorController') // lect 115
 //repalacing password in string
 const DB = process.env.D_STRING.replace('<PASSWORD>', process.env.D_PASSWORD);
 
@@ -43,6 +51,7 @@ app.use(express.static(`${__dirname}/starter/public`));
 const ToursRouteDB = require('./Routes/TourRoutes-DB'); //importing tour route module - DB
 const UsersRoute = require('./Routes/UserRoutes'); // importing user route router
 
+
 // app.use('/api/v1/tours', ToursRoute);
 app.use('/api/v1/tours', ToursRouteDB); //--> DB
 app.use('/api/v1/users', UsersRoute);
@@ -58,34 +67,57 @@ app.use('/api/v1/users', UsersRoute);
 
 // lect 114. Implementing a Global Error Handling Middleware
 // i created this middleware to create error
-app.all('*', (req, res, next) => {
-  //-----------------------------err.message
+/* app.all('*', (req, res, next) => {
+  -----------------------------err.message
   const err = new Error(`Can't find ${req.originalUrl} on this server!`);
   err.statusCode = 404;
   err.status = 'fail';
   next(err) 
-});
+}); */
 // i created this middleware to create error
 
 // ---main global error handler
-app.use((err, req, res, next) => {
-  //------------------  404
+/* app.use((err, req, res, next) => {
+  ------------------  404
   err.statusCode = err.statusCode || 500;
-  //------------- 'fail'
+  ------------- 'fail'
   err.status = err.status || 'error';
   
   res.status(err.statusCode).json({
     status: err.status,
     message: err.message,
   });
-});
+}); */
 // ---main global error handler
 // lect 114. Implementing a Global Error Handling Middleware
+
+// sec 9 lect 115.Better Errors and Refactoring----------------
+
+app.all('*', (req,res,next)=>{
+  next(new AppError(`cant finr ${req.originalUrl} on this servver`),404)
+})
+
+app.use(globalErrorHandler)
+
+// sec 9 lect 115.Better Errors and Refactoring----------------
 
 // module.exports = app // here exporting  'const app = express();'
 
 //*config.env
 const port = process.env.PORT || 3000; //process.env.PORT || 3000;
-app.listen(port, () => {
+// lect 122 assign 'server'
+const server = app.listen(port, () => {
   console.log(`App running on ${port}`);
 });
+
+process.on('unhandledRejection',err=>{
+  console.log(err.name,err.message);
+  console.log('unhandled rejection 💥 shutting down..');
+  server.close(()=>{
+    process.exit(1)
+
+  })
+  
+  
+})
+

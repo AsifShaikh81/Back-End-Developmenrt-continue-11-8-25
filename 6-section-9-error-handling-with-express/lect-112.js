@@ -1,6 +1,8 @@
 /* Lecture 112:Handlin Unhandled Routes
 Handling Unhandled Routes
 
+ remember sec 8 and sec 9 code impleneted in sec 4 
+
 What is it about?
 If we hit a wrong route (or a route that doesn’t exist).
 
