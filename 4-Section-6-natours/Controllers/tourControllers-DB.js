@@ -85,7 +85,7 @@ exports.getAllTours = tryCatchAsync(async (req, res, next) => {
      Apply skip & limit to the mongoose query
      Example: skip(3).limit(3) → fetches docs 4–6
 
-    if (req.query.page) {
+    if (req.query.page){
        Check if the user has provided a "page" query parameter in the URL
        Example: /api/v1/tours?page=2&limit=10
        If no page is passed, we skip this block
