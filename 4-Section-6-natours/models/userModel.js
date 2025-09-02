@@ -3,6 +3,7 @@ and Security */
 
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
 const mongoose = require('mongoose');
 
@@ -24,14 +25,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     // required:[true,'photo is required'],
   },
-  role:{
-    type:String,
-    enum:['admin','user','guid','lead-guide'],
-    default:'user'
+  role: {
+    type: String,
+    enum: ['admin', 'user', 'guid', 'lead-guide'],
+    default: 'user',
   },
   password: {
     type: String,
-    unique: true,
+    // unique: true,
     select: false,
     required: [true, 'password is required'],
     minlength: 8,
@@ -52,9 +53,14 @@ const userSchema = new mongoose.Schema({
     },
     message: 'password must be same',
   },
-  passwordChangetAt: Date,
-  passwordResetExpires:String,
-  passwordResetExpires:Date
+  passwordChangedAt: Date,
+  passwordResetToken: String,
+  passwordResetExpires: Date,
+  active: {
+    type: Boolean,
+    default: true,
+    select: false,
+  },
 });
 
 //* hashing password
@@ -70,14 +76,33 @@ userSchema.pre('save', async function (next) {
   this.passwordConfirm = undefined;
 });
 //----------lect 127-------------
+//------------lect 137-------
+userSchema.pre('save', function (next) {
+  if (!this.isModified('password') || this.isNew) return next();
+  this.passwordChangedAt = Date.now() - 1000;
+  next();
+});
+//------------lect 137-------
+
+// -------------lect 140--------------
+
+userSchema.pre(/^find/, function (next) {
+  //this points to current querty
+  this.find({ active: { $ne: false } });
+  // this.find({ active: true });
+  next();
+});
+
+// -------------lect 140--------------
+
 // ---------lect 130---------
 userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 // --------------- lect 132----------------
 userSchema.methods.changePasswordAfter = function (JWTtimestamp) {
-  if (this.passwordChangetAt) {
-    const changeTimestamp = parseInt(this.passwordChangetAt.getTime() / 1000, 10);
+  if (this.passwordChangedAt) {
+    const changeTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
     return JWTtimestamp < changeTimestamp;
   }
   return false; //* false means not changed
@@ -85,12 +110,14 @@ userSchema.methods.changePasswordAfter = function (JWTtimestamp) {
 
 // lect 135
 userSchema.methods.createPasswordResetToken = function () {
-  const resetToken = crypto.randomBytes(32).toString('hex')
+  const resetToken = crypto.randomBytes(32).toString('hex');
 
   this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-  console.log({resetToken}, this.passwordResetToken);
-  return resetToken
-}
+
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+  console.log({ resetToken }, this.passwordResetToken);
+  return resetToken;
+};
 const userM = mongoose.model('userModel', userSchema);
 
 // ---------lect 130---------
