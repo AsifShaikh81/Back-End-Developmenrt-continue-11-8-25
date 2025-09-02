@@ -1,5 +1,5 @@
 //127. Managing Passwords
- //*we learn to check duplicate password and hash password
+//*we learn to check duplicate password and hash password
 /*  passwordConfirm: {
     type: String,
     unique: true,
@@ -15,16 +15,16 @@
             message: 'password must be same',
             },
             }); */
-            
-            userSchema.pre('save', async function (next){
-                // agar password modified nahi hua toh next return kardo
-                //  Only run this function if password was actually modified
-                if (!this.isModified('password')) return next();
-                
-                // password ko hast kar rahe hai
-                this.password = await bcrypt.hash(this.password, 12);
-                
-                // agar password hash hogaya toh passwordConfirm ko undefined kardo yani tabhi validation mat lagao
-                this.passwordConfirm = undefined;
-            });
+
+userSchema.pre('save', async function (next) {
+  // ➡️ Agar password field modify hi nahi hua hai (jaise user sirf email update kar raha hai), toh hashing dobara run karne ki zarurat nahi hai. Isliye next() call karke middleware ko skip kar dete ho.
+  //  Only run this function if password was actually modified
+  if (!this.isModified('password')) return next();
+
+  // password ko hast kar rahe hai
+  this.password = await bcrypt.hash(this.password, 12);
+
+  // agar password hash hogaya toh passwordConfirm ko undefined kardo yani tabhi validation mat lagao
+  this.passwordConfirm = undefined;
+});
 //* -----main focus-----------

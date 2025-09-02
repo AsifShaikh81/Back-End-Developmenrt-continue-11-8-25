@@ -1,3 +1,4 @@
+// 130. Logging in Users
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
 };
@@ -17,7 +18,6 @@ exports.logIn = tryCatchAsync(async (req, res, next) => {
 
 //*Lekin login ke waqt password chahiye to verify, isliye explicitly include kar rahe hain. */
 
-  //3)
   // *------------------------------------ -clientpass / db password
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError('inc pass or email', 401));
@@ -35,7 +35,8 @@ exports.logIn = tryCatchAsync(async (req, res, next) => {
 userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
-
+// candite password -->  password coming from user
+// userPassword --> coming from database, it is hashed
 // *explaination : https://chatgpt.com/c/68b2c2dc-fc4c-8326-bb57-47a48f6a7135
 
 /* Key Points in Flow

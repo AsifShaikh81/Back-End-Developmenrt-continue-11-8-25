@@ -1,5 +1,5 @@
 
-
+// 126. Creating New Users
 const userM = require("../models/userModel")
 const tryCatchAsync = require('./../utils/try-catch-error-handler');
 
