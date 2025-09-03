@@ -18,6 +18,19 @@ const signToken = (id) => {
 //lect 138
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
+  //* lect 142
+  const cookieOptions = {
+    // -------------------------------------------------------------  converting to miliseconds
+    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+
+    httpOnly: true,
+  };
+  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true; // enable only in production mode
+  res.cookie('jwt', token, cookieOptions);
+  user.password = undefined;
+  // newUser.password = undefined;
+  //* lect 142
+
   res.status(statusCode).json({
     status: 'success',
     token,
@@ -42,13 +55,16 @@ exports.signUp = tryCatchAsync(async (req, res, next) => {
   });
   // creating token
   // ---------------------payload---------------//secretKey---------------//option expiresin -> kab jwt token expire hoga
-  const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+  //_id= coming from database
+  // jwt.sign =  this will create token
+  // *const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
   // sending response
-  res.status(201).json({
+  createSendToken(newUser, 201, res)
+/*   res.status(201).json({
     status: 'success',
     token, // sending token
     data: newUser,
-  });
+  }); */
 });
 //   lect  129
 //*login
@@ -72,10 +88,11 @@ Lekin login ke waqt password chahiye to verify, isliye explicitly include kar ra
   }
   //3) if everything ok send to client
   const token = signToken(user._id); // creating token , this function created above
-  res.status(201).json({
+  createSendToken(user, 200, res)
+ /*  res.status(201).json({
     status: 'success',
     token,
-  });
+  }); */
 });
 
 //* lect 131. Protecting Tour Routes - Part 1
@@ -91,6 +108,8 @@ exports.protectTourRoute = tryCatchAsync(async (req, res, next) => {
     return next(new AppError('You are not logged in', 401));
   }
   //*2) verification of token
+  // jwt.verify = for verifying token that coming from user,
+  // Remember note: create test signature compare it with orignal signature
   const decode = await promisify(jwt.verify)(tokenn, process.env.JWT_SECRET);
   console.log(decode);
 
@@ -176,10 +195,11 @@ exports.resetPassword = tryCatchAsync(async (req, res, next) => {
   //3) Update changed PasswordAt property for the user
   // 4) Log the user in, send JWT
   const token = signToken(user._id);
-  res.status(200).json({
+  createSendToken(user, 200, res)
+/*   res.status(200).json({
     status: 'success',
     token,
-  });
+  }); */
 });
 
 // ------------lect 138
@@ -191,7 +211,7 @@ exports.updatePassword = tryCatchAsync(async (req, res, next) => {
     return next(new AppError('Your current password is wrong.', 401));
   }
   // 3) If so, update password
-  // pass from db = pass that user entering 
+  // pass from db = pass that user entering
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
   await user.save(); // saving updated pass in database
