@@ -1,12 +1,14 @@
 const mongoose = require('mongoose'); // require mongoose package
 const slugify = require('slugify');
+const userM = require('./userModel');
+const { promises } = require('nodemailer/lib/xoauth2');
 // const validator = require('validator');
 //creating Schema
 const tourSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      unique:true,
+      unique: true,
       required: [true, 'name cannob me empty'],
       trim: true, //trime remove white spaces
       maxlength: [40, 'A tour name must have less or equal then 40 characters'],
@@ -53,7 +55,7 @@ const tourSchema = new mongoose.Schema(
       validate: {
         validator: function (val) {
           // Only works when creating NEW doc (not on update)
-         return  val < this.price;
+          return val < this.price;
         },
         message: `Dicscount price ({VALUE}) must be below regular price `,
       },
@@ -84,6 +86,43 @@ const tourSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    //*sec 11 lect 150
+    startLocation: {
+      // GeoJSON
+      type: {
+        type: String,
+        default: 'Point',
+        enum: ['Point'],
+      },
+      coordinates: [Number],
+      address: String,
+      description: String,
+    },
+    locations: [
+      {
+        type: {
+          type: String,
+          default: 'Point',
+          enum: ['Point'],
+        },
+        coordinates: [Number],
+        address: String,
+        description: String,
+        day: Number,
+      },
+    ],
+    //*sec 11 lect 150
+
+    //*lect 151
+    // guides: Array, // it contains users/guides id
+
+    //* lect 152
+    guides: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'userModel',
+      },
+    ],
   },
   // ---------virtual properties---------
   {
@@ -95,6 +134,7 @@ const tourSchema = new mongoose.Schema(
 tourSchema.virtual('durationweek').get(function () {
   return this.duration / 7;
 });
+
 // ---------virtual properties---------
 //------DOCUMENT MIDDLEWARE-------
 // Pre middleware (runs BEFORE the document is saved in DB)
@@ -110,8 +150,25 @@ tourSchema.post('save', function (doc, next) {
   console.log(doc);
   next();
 });
+
+//* lect 151
+/* tourSchema.pre('save', async function (next) {
+  const guidePromises = this.guides.map(async (id) => await userM.findById(id)); // return multiple promises bcz its looping and contain multiple user data
+
+  this.guides = await Promise.all(guidePromises); // catch the all prmise output
+  next();
+}); */
+//* lect 151
 //------DOCUMENT MIDDLEWARE-------
 //------QUERY MIDDLEWARE-------
+//*lect 153
+tourSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'guides',
+    select: '-__v -passwordChangedAt',
+  });
+  next();
+});
 
 // tourSchema.pre('find', function (next) {
 tourSchema.pre(/^find/, function (next) {

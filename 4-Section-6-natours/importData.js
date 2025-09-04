@@ -22,7 +22,7 @@ mongoose
   .then(() => console.log('database connected'));
 
 //Reading json  data
-const readFile = JSON.parse(fs.readFileSync(`${__dirname}/starter/dev-data/data/tours-simple.json`));
+const readFile = JSON.parse(fs.readFileSync(`${__dirname}/starter/dev-data/data/tours.json`));
 
 //IMPORT DATA TO DATABASE
 const importData = async () => {
@@ -39,7 +39,7 @@ const importData = async () => {
 const deleteData = async () => {
   try {
     await Tour.deleteMany(); // Delete all records from the tours collection
-    console.log('data successfully loaded');
+    console.log('data successfully deleted');
     process.exit(); // it will forcefully exit after above operations executed
   } catch (err) {
     console.log(err);
@@ -54,3 +54,8 @@ if (process.argv[2] === '--import') {
 } else if (process.argv[2] === '--delete') {
   deleteData();
 }
+
+//* how to use ?
+//* first change the file(readFile) u want to import and run the import cmd to import file in database
+//* cmd to delete  node importData.js --delete
+//* cmd to import  node importData.js --import
