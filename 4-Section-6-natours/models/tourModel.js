@@ -131,9 +131,19 @@ const tourSchema = new mongoose.Schema(
   },
 );
 
+// durationweek is field which we set virtually 
+// duration is actuall field from the schema 
 tourSchema.virtual('durationweek').get(function () {
   return this.duration / 7;
 });
+
+//*lect 157
+tourSchema.virtual('reviews',{
+  ref:'Review', // referencing to review model(connecting)
+  foreignField:'tour', //for connecting review and tour model, this tour fiels inside review model 
+  localField:'_id' // '_id' is a primary key of tour document 
+})
+//*lect 157
 
 // ---------virtual properties---------
 //------DOCUMENT MIDDLEWARE-------

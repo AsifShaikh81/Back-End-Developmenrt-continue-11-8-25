@@ -130,7 +130,7 @@ exports.getAllTours = tryCatchAsync(async (req, res, next) => {
   });
 });
 exports.getToursById = tryCatchAsync(async (req, res, next) => {
-  const DATA = await Tour.findById(req.params.ID); // GET DATA BY id ,req.param.ID ka .ID = /:ID(route) must be same
+  const DATA = await Tour.findById(req.params.ID).populate('reviews'); // GET DATA BY id ,req.param.ID ka .ID = /:ID(route) must be same
   // Tour.findOne({ _id: req.params.ID}) // THIS WORK SAME AS ABOVE CODE
   // Tour.findOne({filter:property we searching for value:value we want search for})
 

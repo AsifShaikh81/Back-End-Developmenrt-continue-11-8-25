@@ -6,6 +6,9 @@ const router = express.Router();
 //TourControllers.checkBody is param middleware define befoe creating that is before TourControllers.postTours
 const authController = require('./../Controllers/authController.js')
 
+const ReviewController = require('./../Controllers/reviewController');
+
+
 router.route('/').get(authController.protectTourRoute,TourControllersDB.getAllTours).post(TourControllersDB.postTours);
 
 router.route('/top-5-cheap').get(TourControllersDB.aliasTopTours, TourControllersDB.getAllTours);
@@ -19,4 +22,6 @@ router
   .patch(TourControllersDB.updateTours)
   .delete(authController.protectTourRoute,authController.restrictTo('admin','lead-guide'),TourControllersDB.deleteTours);
 //router.param('id',TourControllers.checkID) //param middleware
+
+router.route('/:tourID/reviews').post(authController.protectTourRoute,authController.restrictTo('user'),ReviewController.createReview )
 module.exports = router;

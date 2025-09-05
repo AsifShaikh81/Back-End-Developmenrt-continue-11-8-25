@@ -1,10 +1,10 @@
 //TopicBette structure
 // lect 123
-process.on('uncaughtException', (err) => {
+/* process.on('uncaughtException', (err) => {
   console.log(err.name, err.message);
   console.log('unhandled rejection 💥 shutting down..');
   process.exit(1);
-});
+}); */
 //*config.env
 const dotenv = require('dotenv');
 // import { rateLimit } from 'express-rate-limit';  lect 143
@@ -85,10 +85,13 @@ app.use(
 //const ToursRoute = require('./Routes/TourRoutes'); importing tour route module
 const ToursRouteDB = require('./Routes/TourRoutes-DB'); //importing tour route module - DB
 const UsersRoute = require('./Routes/UserRoutes'); // importing user route router
+const ReviewRoute = require('./Routes/ReviewRoute') // importing review route
+
 
 // app.use('/api/v1/tours', ToursRoute);
 app.use('/api/v1/tours', ToursRouteDB); //--> DB
 app.use('/api/v1/users', UsersRoute);
+app.use('/api/v1/reviews', ReviewRoute)
 
 // sec 9 lect 112:Handlin Unhandled Routes
 /* app.all('*', (req,res,next)=>{
