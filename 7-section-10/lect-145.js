@@ -6,6 +6,6 @@ const mongoSanitize = require('express-mongo-sanitize'); //  to import
 app.use(mongoSanitize()); // to use
 
 // *1) to preven cross site scritpting attack (depricated)
-//npm ixss-clean // to install
+//npm xss-clean // to install
 const xss = require('xss-clean');  //  to import
 app.use(xss()) // to use
