@@ -14,4 +14,4 @@ guides: [
 //*ref = refrencing to user model
 
 // ref:refering to the model (connecting )
-// mongoose.Schema.ObjectId, ---> it will get the id of the refering model , in this case we ref 'userModel' so it will get userModel id 
+// mongoose.Schema.ObjectId, ---> it will get the id of the refering model , in this case we ref 'userModel' so it will get userModel id

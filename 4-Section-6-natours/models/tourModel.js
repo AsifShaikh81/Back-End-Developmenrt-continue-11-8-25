@@ -141,7 +141,7 @@ tourSchema.virtual('durationweek').get(function () {
 tourSchema.virtual('reviews',{
   ref:'Review', // referencing to review model(connecting)
   foreignField:'tour', //for connecting review and tour model, this tour fiels inside review model 
-  localField:'_id' // '_id' is a primary key of tour document 
+  localField:'_id' // '_id' is a primary key of tour document , Tour model ka "_id" field
 })
 //*lect 157
 

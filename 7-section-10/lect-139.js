@@ -37,3 +37,8 @@ filterobj function is created to allow only selected field = name, email
 
 if(allowedFields.includes(el))  => check kar raha hai allowed fields ke andar humne jo el dala hai woh hai ki nahi 
 newObj[el] = obj[el] agar hai toh newObj ke andar wo elements dal do joh 'obj' ke andar hai aur fir return kardo 'newObj' ko  */
+
+//* remember 
+/* Normal updateUser / deleteUser admin ke liye hote hain (jo kisi bhi user ko update/delete kar sake).
+
+Lekin updateMe aur deleteMe ka focus sirf currently logged-in user pe hota hai. */

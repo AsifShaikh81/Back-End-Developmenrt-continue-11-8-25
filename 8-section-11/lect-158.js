@@ -23,7 +23,7 @@ and a tour ID should come from the current tour. */
 // inside review controller 
 // while posting if we manually dont specify tour id and user id in body then automatocally get tour and user id from url
     if(!req.body.tour) req.body.tour = req.params.tourID;
-    if(!req.body.user) req.body.user  = req.user.id 
+    if(!req.body.user) req.body.user  = req.user.id //comming from protect tour route 
 
     //route inside tour route 
     router.route('/:tourID/reviews').post(authController.protectTourRoute,authController.restrictTo('user'),ReviewController.createReview )

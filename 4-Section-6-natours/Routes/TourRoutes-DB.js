@@ -1,3 +1,4 @@
+// global route :/api/v1/tours
 const express = require('express');
 
 const TourControllersDB = require('../Controllers/tourControllers-DB.js'); //importing controllers- databse
@@ -6,7 +7,11 @@ const router = express.Router();
 //TourControllers.checkBody is param middleware define befoe creating that is before TourControllers.postTours
 const authController = require('./../Controllers/authController.js')
 
-const ReviewController = require('./../Controllers/reviewController');
+// const ReviewController = require('./../Controllers/reviewController');
+const Reviewrouter = require('./../Routes/ReviewRoute.js')
+
+// router.route('/:tourID/reviews').post(authController.protectTourRoute,authController.restrictTo('user'),ReviewController.createReview )
+router.use('/:tourID/reviews', Reviewrouter) // *LECT 159
 
 
 router.route('/').get(authController.protectTourRoute,TourControllersDB.getAllTours).post(TourControllersDB.postTours);
@@ -23,5 +28,5 @@ router
   .delete(authController.protectTourRoute,authController.restrictTo('admin','lead-guide'),TourControllersDB.deleteTours);
 //router.param('id',TourControllers.checkID) //param middleware
 
-router.route('/:tourID/reviews').post(authController.protectTourRoute,authController.restrictTo('user'),ReviewController.createReview )
+
 module.exports = router;

@@ -14,3 +14,6 @@ tourSchema.pre('save', async function (next) {
 });
 
 //* all explaination in notebook 
+
+// reda this
+// https://chatgpt.com/c/68bb2cf3-e9fc-8332-979b-64ca73220cef
