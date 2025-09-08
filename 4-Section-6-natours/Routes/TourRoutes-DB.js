@@ -14,17 +14,17 @@ const Reviewrouter = require('./../Routes/ReviewRoute.js')
 router.use('/:tourID/reviews', Reviewrouter) // *LECT 159
 
 
-router.route('/').get(authController.protectTourRoute,TourControllersDB.getAllTours).post(TourControllersDB.postTours);
+router.route('/').get(/* authController.protectTourRoute, */TourControllersDB.getAllTours).post(authController.protectTourRoute,authController.restrictTo('user','lead-guide'),TourControllersDB.postTours);
 
 router.route('/top-5-cheap').get(TourControllersDB.aliasTopTours, TourControllersDB.getAllTours);
 
 router.route('/tour-stats').get(TourControllersDB.getTourStats);
 
-router.route('/monthly-plan/:YEAR').get(TourControllersDB.getMonthlyPlan);
+router.route('/monthly-plan/:YEAR').get(authController.protectTourRoute,authController.restrictTo('user','lead-guide'),TourControllersDB.getMonthlyPlan);
 router
   .route('/:ID')
   .get(TourControllersDB.getToursById)
-  .patch(TourControllersDB.updateTours)
+  .patch(authController.protectTourRoute,authController.restrictTo('user','lead-guide'),TourControllersDB.updateTours)
   .delete(authController.protectTourRoute,authController.restrictTo('admin','lead-guide'),TourControllersDB.deleteTours);
 //router.param('id',TourControllers.checkID) //param middleware
 

@@ -147,10 +147,10 @@ const server = app.listen(port, () => {
   console.log(`App running on ${port}`);
 });
 
-process.on('unhandledRejection', (err) => {
+/* process.on('unhandledRejection', (err) => {
   console.log(err.name, err.message);
   console.log('unhandled rejection 💥 shutting down..');
   server.close(() => {
     process.exit(1);
   });
-});
+}); */
