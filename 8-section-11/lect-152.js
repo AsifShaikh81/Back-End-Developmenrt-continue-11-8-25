@@ -3,7 +3,7 @@
 guides: [
   {
     type: mongoose.Schema.ObjectId, //stores the _id of a 'userModel'
-    ref: 'userModel', /// no need to impport user model direct usser model ka naam diya toh bhi chalgea, ref take responsibilty of connecting 'userModel
+    ref: 'userModel', /// no need to impport user model direct usser model ka naam dall do , ref take responsibilty of connecting 'userModel
   },
 ];
 

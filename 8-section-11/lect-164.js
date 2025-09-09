@@ -11,3 +11,5 @@ next()
 
 // inside user route
 router.route('/me').get(authController.protectTourRoute,getMe,getUsers) // lect 164
+
+// req.user.id ===> is coming from authController.protectTourRoute
