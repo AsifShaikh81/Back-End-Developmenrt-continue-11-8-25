@@ -134,6 +134,8 @@ const tourSchema = new mongoose.Schema(
 tourSchema.index({ price: 1, ratingsAverage: -1 }); // lect 167
 tourSchema.index({ slug: 1 });
 
+tourSchema.index({startLocation:'2dsphere'}) //lect 171
+
 // durationweek is field which we set virtually
 // duration is actuall field from the schema
 tourSchema.virtual('durationweek').get(function () {
@@ -196,11 +198,11 @@ tourSchema.post(/^find/, function (docs, next) {
 });
 //------QUERY MIDDLEWARE-------
 //------AGGREGATION MIDDLEWARE------
-tourSchema.pre('aggregate', function (next) {
+/* tourSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
   console.log(this.pipeline());
   next();
-});
+}); */
 //------AGGREGATION MIDDLEWARE-------
 
 //creating model//collection

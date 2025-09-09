@@ -13,6 +13,7 @@ const reviewSchema = new mongoose.Schema(
       type: Number,
       min: 1,
       max: 5,
+      set: val => Math.round(val * 10)/10 //4.66666, 46.6666. 47, 4.7
     },
     createdAt: {
       type: Date,
@@ -34,7 +35,7 @@ const reviewSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   },
 );
-
+reviewSchema.index({tour:1,user:1},{unique:true }) //lect 170
 reviewSchema.pre(/^find/, function (next) {
   // if u want populate 2 fields u use 2 populate() , if 3 then u use 3 populate()
   this.populate({
