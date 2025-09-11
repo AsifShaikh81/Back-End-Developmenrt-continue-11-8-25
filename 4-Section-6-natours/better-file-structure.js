@@ -16,6 +16,7 @@ const xss = require('xss-clean');
 //*lect 145
 
 const hpp = require('hpp'); //*lect 146
+const cookieParser = require('cookie-parser'); //*section 12
 
 dotenv.config({ path: './config.env' });
 // console.log(process.env);
@@ -56,7 +57,7 @@ app.set('views', path.join(__dirname, 'views')); // setiing folder location
 app.use(express.static(path.join(__dirname, '/starter/public'))); //lect 176
 
 //* 5)helmet middleware  // lect 144
-app.use(helmet());
+app.use(helmet({ contentSecurityPolicy: false }));
 
 //* 1)development logging
 if (process.env.NODE_ENV === 'development') {
@@ -76,6 +77,8 @@ app.use('/api', limiter);
 //*3) body parser, reading data from the body into req.body
 app.use(express.json({ limit: '10kb' })); //*body will recive 10 kb data ,more than that 10kb it will note recive kb =kilobyte/kilobite
 
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(cookieParser()); //* section 12
 // *lect 145
 //*5) preventing no sql attack using express-mongo-sanitize npm package
 app.use(mongoSanitize()); //* lect 145
@@ -94,13 +97,12 @@ const ToursRouteDB = require('./Routes/TourRoutes-DB'); //importing tour route m
 const UsersRoute = require('./Routes/UserRoutes'); // importing user route router
 const ReviewRoute = require('./Routes/ReviewRoute'); // importing review route
 
-const viewRoute = require('./Routes/viewRoute') //lect-181
+const viewRoute = require('./Routes/viewRoute'); //lect-181
 
 //pug route lect -176
 
-
 // app.use('/api/v1/tours', ToursRoute);
-app.use('/',viewRoute) // lect -181
+app.use('/', viewRoute); // lect -181
 app.use('/api/v1/tours', ToursRouteDB); //--> DB
 app.use('/api/v1/users', UsersRoute);
 app.use('/api/v1/reviews', ReviewRoute);

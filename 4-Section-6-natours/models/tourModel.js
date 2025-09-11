@@ -1,7 +1,7 @@
 const mongoose = require('mongoose'); // require mongoose package
 const slugify = require('slugify');
 const userM = require('./userModel');
-const { promises } = require('nodemailer/lib/xoauth2');
+
 // const validator = require('validator');
 //creating Schema
 const tourSchema = new mongoose.Schema(

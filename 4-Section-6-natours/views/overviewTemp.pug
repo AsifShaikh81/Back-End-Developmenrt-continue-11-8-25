@@ -1,3 +1,54 @@
 extends base
+
 block content
- h1 this is tour overview 
+ main.main
+  .card-container
+    each x in tours
+        .card
+            .card__header
+                .card__picture
+                    .card__picture-overlay &nbsp;
+                    img.card__picture-img(src=`img/tours/${x.imageCover}`, alt=`${x.name}`)
+                h3.heading-tertirary
+                    //x ke andar tour model ka data hai aur tour model se humne name nikala
+                    span= x.name 
+
+            .card__details
+                // changed here
+                h4.card__sub-heading= `${x.difficulty} ${x.duration}-day tour ` 
+                p.card__text= x.summary
+
+                .card__data
+                    svg.card__icon
+                        use(xlink:href='img/icons.svg#icon-map-pin')
+                    // changed here
+                    span= x.startLocation.description
+
+                .card__data
+                    svg.card__icon
+                        use(xlink:href='img/icons.svg#icon-calendar')
+                    // changed here
+                    span= x.startDates[0].toLocaleString('en-us',{month:'long',year:'numeric'})
+
+                .card__data
+                    svg.card__icon
+                        use(xlink:href='img/icons.svg#icon-flag')
+                    // changed here
+                    span= `${x.locations.length} stops`
+
+                .card__data
+                    svg.card__icon
+                        use(xlink:href='img/icons.svg#icon-user')
+                    // changed here
+                    span= `${x.maxGroupSize} people` 
+
+            .card__footer
+                p
+                    span.card__footer-value= `${x.price}`
+                    | 
+                    span.card__footer-text per person
+                p.card__ratings
+                    span.card__footer-value= x.ratingsAverage
+                    |   
+                    span.card__footer-text= `rating (${x.ratingsQuantity})`
+                a.btn.btn--green.btn--small(href=`/tour/${x.slug}`) Details
