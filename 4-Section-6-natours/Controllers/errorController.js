@@ -23,14 +23,24 @@ const handleValidationErrorDB = (err) => {
   return new AppError(message, 400);
 };
 
-const sendErrorDev = (err, res) => {
-  res.status(err.statusCode).json({
+const sendErrorDev = (err,req, res) => {
+  if (req.originalUrl.startsWith('/api')){
+     res.status(err.statusCode).json({
     status: err.status,
     message: err.message,
     stack: err.stack,
   });
+  }
+   // B) RENDERED WEBSITE
+  console.error('ERROR 💥', err);
+  return res.status(err.statusCode).render('error', {
+    title: 'Something went wrong!',
+    msg: err.message
+  });
+ 
 };
-const sendErrorProd = (err, res) => {
+
+const sendErrorProd = (err,req, res) => {
   if (err.isOperational) {
     res.status(err.statusCode).json({
       status: err.status,
@@ -51,7 +61,7 @@ module.exports = (err, req, res, next) => {
   err.status = err.status || 'error';
 
   if (process.env.NODE_ENV === 'development') {
-    sendErrorDev(err, res);
+    sendErrorDev(err,req, res);
   } else if (process.env.NODE_ENV === 'production') {
     let error = { ...err }; // lect 119 //! minor bug
 
@@ -61,5 +71,7 @@ module.exports = (err, req, res, next) => {
     if (error.code === 11000) error = handleDuplicateFieldsDB(error);
     // lec 121 //! minor bug
     if (error.name === 'ValidationError') error = handleValidationErrorDB(error);
+
+    sendErrorProd(error, req, res);
   }
 }; // exporting in main file (better-file-structure.js)

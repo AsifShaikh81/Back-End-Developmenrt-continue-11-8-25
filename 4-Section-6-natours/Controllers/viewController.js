@@ -8,11 +8,12 @@ exports.getOverview = tryCatchAsync(async (req, res) => {
   const tours = await Tour.find();
   res.status(200).render('overviewTemp', {
     title: 'All Tours',
+    // user: res.locals.user || req.user ,
     tours, // all the tour data from collection pass to template
   });
 });
 
-exports.getTour = tryCatchAsync(async (req, res) => {
+exports.getTour = tryCatchAsync(async (req, res,next) => {
   /*In Mongoose, when you use .populate(), you’re telling MongoDB:
 “Along with this document, also fetch related documents from another collection.” */
   const tour = await Tour.findOne({ slug: req.params.slug }).populate({
@@ -26,19 +27,26 @@ exports.getTour = tryCatchAsync(async (req, res) => {
 
   res.status(200).render('tourTemp', {
     title: `${tour.name} Tour `,
+    // user: res.locals.user || req.user , 
     tour, // passing data, it contains tour model collection
   });
 });
-
+exports.getSignUp = (req,res)=>{
+  res.status(200).render('signUp',{
+    title:'sign up'
+  })
+}
 exports.getLoginForm = (req, res) => {
   res.status(200).render('login', {
-    title: 'Log into your account'
+    title: 'Log into your account',
+    
   });
 };
 
 exports.getAccount = (req, res) => {
   res.status(200).render('account', {
-    title: 'Your account'
+    title: 'Your account',
+    user: res.locals.user || req.user 
   });
 };
 

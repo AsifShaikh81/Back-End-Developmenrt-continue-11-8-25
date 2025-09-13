@@ -4,14 +4,19 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon better-file-structure.js",
-    "debug": "ndb better-file-structure.js"
+    "debug": "ndb better-file-structure.js",
+    "watch:js": "parcel watch ./starter/public/js/index.js --out-dir ./starter/public/js --out-file bundle.js",
+    "build:js": "parcel watch ./starter/public/js/index.js --out-dir ./starter/public/js --out-file bundle.js"
   },
   "author": "Asif Shaikh",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@babel/polyfill": "^7.4.4",
+    "axios": "^0.18.0",
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^4.21.2",
     "express-mongo-sanitize": "^2.2.0",
@@ -28,6 +33,7 @@
   },
   "devDependencies": {
     "ndb": "^1.1.5",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "parcel-bundler": "^1.12.3"
   }
 }

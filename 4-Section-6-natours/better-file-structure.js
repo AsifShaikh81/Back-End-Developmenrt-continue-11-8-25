@@ -5,6 +5,7 @@
   console.log('unhandled rejection 💥 shutting down..');
   process.exit(1);
 }); */
+
 //*config.env
 const dotenv = require('dotenv');
 // import { rateLimit } from 'express-rate-limit';  lect 143
@@ -22,6 +23,7 @@ dotenv.config({ path: './config.env' });
 // console.log(process.env);
 
 const express = require('express');
+const cors = require('cors');
 const morgan = require('morgan');
 
 const mongoose = require('mongoose'); // require mongoose package
@@ -46,6 +48,7 @@ mongoose
 // });
 const path = require('path');
 const app = express();
+app.use(cors({}));
 
 app.set('view engine', 'pug'); // init pug
 app.set('views', path.join(__dirname, 'views')); // setiing folder location
@@ -76,9 +79,9 @@ app.use('/api', limiter);
 //*lect 143
 //*3) body parser, reading data from the body into req.body
 app.use(express.json({ limit: '10kb' })); //*body will recive 10 kb data ,more than that 10kb it will note recive kb =kilobyte/kilobite
+app.use(cookieParser()); //* section 12 // parse data from cookie
 
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
-app.use(cookieParser()); //* section 12
 // *lect 145
 //*5) preventing no sql attack using express-mongo-sanitize npm package
 app.use(mongoSanitize()); //* lect 145
@@ -98,6 +101,11 @@ const UsersRoute = require('./Routes/UserRoutes'); // importing user route route
 const ReviewRoute = require('./Routes/ReviewRoute'); // importing review route
 
 const viewRoute = require('./Routes/viewRoute'); //lect-181
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString;
+  console.log(req.cookies);
+  next();
+});
 
 //pug route lect -176
 

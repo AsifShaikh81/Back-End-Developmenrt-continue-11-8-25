@@ -59,8 +59,8 @@ exports.signUp = tryCatchAsync(async (req, res, next) => {
   // jwt.sign =  this will create token
   // *const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
   // sending response
-  createSendToken(newUser, 201, res)
-/*   res.status(201).json({
+  createSendToken(newUser, 201, res);
+  /*   res.status(201).json({
     status: 'success',
     token, // sending token
     data: newUser,
@@ -88,12 +88,23 @@ Lekin login ke waqt password chahiye to verify, isliye explicitly include kar ra
   }
   //3) if everything ok send to client
   const token = signToken(user._id); // creating token , this function created above
-  createSendToken(user, 200, res)
- /*  res.status(201).json({
+  createSendToken(user, 200, res);
+  /*  res.status(201).json({
     status: 'success',
     token,
   }); */
 });
+// *section 12
+exports.logout = (req, res) => {
+  res.cookie('jwt', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+    // user: res.locals.user || req.user,
+  });
+  res.clearCookie('jwt');
+  res.status(200).json({ status: 'success' });
+  // res.redirect('/')
+};
 
 //* lect 131. Protecting Tour Routes - Part 1
 // creating middlware to protect tour route
@@ -102,10 +113,13 @@ exports.protectTourRoute = tryCatchAsync(async (req, res, next) => {
   let tokenn;
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     tokenn = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies.jwt) {
+    tokenn = req.cookies.jwt;
   }
   // console.log(tokenn);
   if (!tokenn) {
-    return next(new AppError('You are not logged in', 401));
+    return res.redirect('/'); //changes
+    // return next(new AppError('You are not logged in', 401));
   }
   //*2) verification of token
   // jwt.verify = for verifying token that coming from user,
@@ -127,18 +141,21 @@ exports.protectTourRoute = tryCatchAsync(async (req, res, next) => {
   //*optional-----
   //*GRANT ACCESS TO PROTECTED ROUTE
   req.user = currentUser;
+  res.locals.user = currentUser;
+
   next();
 });
 
 // Only for rendered pages, no errors! section 12
 exports.isLoggedIn = async (req, res, next) => {
+  // if (req.cookies.jwt === null) {
+  //   return next();
+  //   //*changes above
+  // }
   if (req.cookies.jwt) {
     try {
       // 1) verify token
-      const decoded = await promisify(jwt.verify)(
-        req.cookies.jwt,
-        process.env.JWT_SECRET
-      );
+      const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
 
       // 2) Check if user still exists
       const currentUser = await userM.findById(decoded.id);
@@ -153,11 +170,14 @@ exports.isLoggedIn = async (req, res, next) => {
 
       // THERE IS A LOGGED IN USER
       res.locals.user = currentUser;
+      // req.user = currentUser;
       return next();
     } catch (err) {
       return next();
     }
   }
+  // console.log('Cookies:', req.cookies);
+  // console.log('res.locals.user:', res.locals.user);
   next();
 };
 
@@ -226,8 +246,8 @@ exports.resetPassword = tryCatchAsync(async (req, res, next) => {
   //3) Update changed PasswordAt property for the user
   // 4) Log the user in, send JWT
   const token = signToken(user._id);
-  createSendToken(user, 200, res)
-/*   res.status(200).json({
+  createSendToken(user, 200, res);
+  /*   res.status(200).json({
     status: 'success',
     token,
   }); */
