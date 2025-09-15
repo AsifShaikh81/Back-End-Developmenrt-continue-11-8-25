@@ -1,5 +1,7 @@
 // global route for users : '/api/v1/users'
 const express = require('express');
+const multer = require('multer')
+const upload  = multer({dest:'starter/public/img/users'})
 
 // const UserControllers = require('../Controllers/userControllers') // importing controllers
 const {
@@ -11,6 +13,8 @@ const {
   updateMe,
   deleteMe,
   getMe,
+  uploadPhotos,
+  resizeUserPhoto
 } = require('../Controllers/userControllers'); // importing controllers, another way of imporitng controllers called 'destructuring import'
 const authController = require('./../Controllers/authController');
 
@@ -33,7 +37,7 @@ router.use(authController.protectTourRoute); // lect 165
 // u need to logged in to get ur own info
 router.route('/me').get(getMe, getUsers); // lect 164
 // u need to logged in to update ur name and email
-router.route('/updateme').patch(updateMe);
+router.route('/updateme').patch(uploadPhotos,resizeUserPhoto,updateMe);
 // u need to logged in to delete  ur aacount
 router.route('/deleteMe').delete(deleteMe);
 

@@ -8,6 +8,7 @@ exports.getOverview = tryCatchAsync(async (req, res) => {
   const tours = await Tour.find();
   res.status(200).render('overviewTemp', {
     title: 'All Tours',
+    // user: res.locals.user || req.user || null,
     // user: res.locals.user || req.user ,
     tours, // all the tour data from collection pass to template
   });

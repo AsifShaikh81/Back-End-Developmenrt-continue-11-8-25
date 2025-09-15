@@ -26,6 +26,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 
+
 const mongoose = require('mongoose'); // require mongoose package
 const AppError = require('./utils/appError'); // lect 115
 const globalErrorHandler = require('./Controllers/errorController'); // lect 115
@@ -48,7 +49,9 @@ mongoose
 // });
 const path = require('path');
 const app = express();
-app.use(cors({}));
+// app.use(cors());
+app.use(cors({origin: 'http://localhost:8000', 
+  credentials: true  }));
 
 app.set('view engine', 'pug'); // init pug
 app.set('views', path.join(__dirname, 'views')); // setiing folder location
@@ -103,7 +106,7 @@ const ReviewRoute = require('./Routes/ReviewRoute'); // importing review route
 const viewRoute = require('./Routes/viewRoute'); //lect-181
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString;
-  console.log(req.cookies);
+  // console.log(req.cookies);
   next();
 });
 

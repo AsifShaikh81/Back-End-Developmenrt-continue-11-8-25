@@ -8829,16 +8829,28 @@ if (loginForm) loginForm.addEventListener('submit', function (e) {
   var password = document.getElementById('password').value;
   (0, _login.login)(email, password);
 });
-if (logOutBtn) logOutBtn.addEventListener('click', _login.logout);
+if (logOutBtn) logOutBtn.addEventListener('click', _login.logout); //*section 12
+
+/* if (userDataForm)
+userDataForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  updateSettings({ name, email }, 'data');
+  }); */
+//*section 12
+//*section 13 lect 203
+
 if (userDataForm) userDataForm.addEventListener('submit', function (e) {
   e.preventDefault();
-  var name = document.getElementById('name').value;
-  var email = document.getElementById('email').value;
-  (0, _updateSettings.updateSettings)({
-    name: name,
-    email: email
-  }, 'data');
-});
+  var form = new FormData();
+  form.append('name', document.getElementById('name').value);
+  form.append('email', document.getElementById('email').value);
+  form.append('photo', document.getElementById('photo').files[0]);
+  console.log(form);
+  (0, _updateSettings.updateSettings)(form, 'data');
+}); //*section 13 lect 203
+
 if (userPasswordForm) userPasswordForm.addEventListener('submit',
 /*#__PURE__*/
 function () {
@@ -8905,7 +8917,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65506" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59537" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

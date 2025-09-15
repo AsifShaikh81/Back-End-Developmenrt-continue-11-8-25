@@ -1,0 +1,22 @@
+203. Adding Image Uploads to Form
+
+what we learn in  this lecture
+// jab front end mein user img upload kare toh hona chaiye 
+
+// inside account.pugf
+img.form__user-photo(src=`/img/users/${user.photo}`, alt='User photo')
+input.form__upload(type='file', accept='image/*', id='photo',name='photo')
+label(for="photo") Choose new photo
+
+// inside index.js
+//*section 13 lect 203
+if (userDataForm)
+  userDataForm.addEventListener('submit', e=>{
+  e.preventDefault();
+const form = new FormData(); 
+form.append('name', document.getElementById('name').value);
+form.append('email', document.getElementById('email').value);
+form.append('photo', document.getElementById('photo').files[0]);
+console.log(form);
+updateSettings (form, 'data');
+});

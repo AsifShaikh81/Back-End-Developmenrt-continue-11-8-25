@@ -1,0 +1,16 @@
+201. Saving Image Name to Database
+
+
+inside user controllr -> update me
+// agar req.file hai toh photo(coming from user model db) filed mein user dwara upload kiya gaya photo set kardo photo filed mein
+if(req.file) filterBody.photo = req.file.filename //lec 201
+
+inside model
+// agar user koi photo upload nah kare toh defaul photo 'defaul.jpg' hoga
+
+  photo: {
+    type: String,
+    default: 'default.jpg' // lect 201
+    
+  },
+

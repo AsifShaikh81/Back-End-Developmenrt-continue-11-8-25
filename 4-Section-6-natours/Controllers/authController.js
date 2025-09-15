@@ -99,6 +99,7 @@ exports.logout = (req, res) => {
   res.cookie('jwt', 'loggedout', {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
+    //  secure: req.secure || req.headers['x-forwarded-proto'] === 'https'
     // user: res.locals.user || req.user,
   });
   res.clearCookie('jwt');
@@ -168,8 +169,9 @@ exports.isLoggedIn = async (req, res, next) => {
         return next();
       }
 
-      // THERE IS A LOGGED IN USER
+      // THERE IS A LOGGED IN USER // it passes in all pug
       res.locals.user = currentUser;
+      console.log('res.locals.user in isLoggedIn:', res.locals.user);
       // req.user = currentUser;
       return next();
     } catch (err) {

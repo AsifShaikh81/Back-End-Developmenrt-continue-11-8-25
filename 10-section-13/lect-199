@@ -1,0 +1,29 @@
+199. Image Uploads Using Multer: Users
+
+Multer is a very popular middleware
+
+to handle multi-part form data, which is a form in coding
+
+that's used to upload files from a form.
+
+//to install multer
+npm i multer@1.4.1
+inside user route ,later moved in user controller
+const multer = require('multer')
+=========================   // des name where img is
+const upload  = multer({dest:'/starter/public/img/users'})
+================================== // photo is field name 
+router.route('/updateme').patch(upload.single('photo'),updateMe);
+
+//explanation
+upload.single => upload 1 img
+upload.single('photo')=>we pass field name in it which hold photo
+
+database mein img direct upload nahi hoga file system se read kar ke bhejma joga database mein img ko
+
+what is multer
+Multer is a very popular middleware
+
+to handle multi-part form data, which is a form in coding
+
+that's used to upload files from a form.

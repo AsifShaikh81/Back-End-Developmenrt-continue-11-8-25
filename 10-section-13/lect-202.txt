@@ -1,0 +1,28 @@
+202. Resizing Images
+
+what we lern in this lec?
+// user jo photo upload kiya hai woh sqaure mein na ho toh uss case mein hume resize karna hoga 
+// npm i sharp
+
+// sharp for resizing img
+const  sharp = require('sharp') 
+
+// save img in memory
+const multerStorage  = multer.memoryStorage()
+
+exports.resizeUserPhoto = async (req, res, next) => {
+  if (!req.file) return next();
+  // creating file name
+  req.file.filename = `userM-${req.user.id}-${Date.now()}.jpeg`;
+  //-------------------------------ht--widt
+  await sharp(req.file.buffer)
+    .resize(500, 500)  // resizing photo height and width
+    .toFormat('jpeg') // defining photo format
+    .jpeg({ quality: 90 }) // setting quality 
+    .toFile(`starter/public/img/users/${req.file.filename}`); // file kaha save hoga and filename
+
+  next();
+};
+
+/in user route
+router.route('/updateme').patch(uploadPhotos,resizeUserPhoto,updateMe);

@@ -1,0 +1,36 @@
+200. Configuring Multer
+
+const multer = require('multer');
+// creating storage
+const multerStorage = multer.diskStorage({
+  // des de rahe ki img file kaha hai
+  destination: (req, file, cb) => {
+    cb(null, 'starter/public/img/users');
+  },
+  filename: (req, file, cb) => {
+    const ext = file.mimetype.split('/')[1];
+    cb(null, `userM-${req.user.id}-${Date.now()}.${ext}`);
+  },
+});
+
+// creating filter, agar upload kiya hua file img hai ya nahi hai toh kya kare
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) {
+    cb(null, true);
+  } else {
+    cb(new AppError('Not an image! Please upload only images.', 400), false);
+  }
+};
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+exports.uploadPhotos = upload.single('photo'); // lect 200
+
+explanation 
+cb = callback :So this callback function has access to the current request,to the currently uploaded file, and also to a callback function.
+
+mimetype: hold extension, like jpeg
+
+req,file has access to its current req and file

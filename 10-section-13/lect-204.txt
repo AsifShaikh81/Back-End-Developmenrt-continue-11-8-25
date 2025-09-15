@@ -1,0 +1,62 @@
+204. Uploading Multiple Images: Tours
+
+what we learn in this lecture 
+So now that the user photo upload feature
+is completed, let's now learn how to upload multiple files
+at the same time and also how
+to process multiple images at the same time.
+
+And so in this lecture and the next one,
+we're going to be uploading and processing tour pictures.
+
+
+code:
+const multer = require('multer');
+const sharp = require('sharp');
+
+// saving in memory
+const multerStorage = multer.memoryStorage();
+// creating filter, agar upload kiya hua file img hai ya nahi hai toh kya kare
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) {
+    cb(null, true);
+  } else {
+    cb(new AppError('Not an image! Please upload only images.', 400), false);
+  }
+};
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+//for multiple files
+exports.uploadTourImages = upload.fields([
+  { name: 'imageCover', maxCount: 1 },
+  { name: 'images', maxCount: 3 },
+]);
+
+//upload.single('image') req.file
+// upload.array('images', 5) req.files
+
+exports.resizeTourImages = (req, res, next) => {
+  console.log(req.files);
+  next();
+};
+
+inside tour route
+router
+  .route('/:ID')
+  .get(TourControllersDB.getToursById)
+  .patch(
+    authController.protectTourRoute,
+    authController.restrictTo('user', 'lead-guide'),
+    TourControllersDB.uploadTourImages, // added this middleware
+    TourControllersDB.resizeTourImages, // added this middleware
+    TourControllersDB.updateTours,
+  )
+
+
+
+note: same hi jo prev lectur mein use kiya tha
+multer is used to save img in database or memory and to filter out 
+sharp is used to resize img like hieght, widht, quality etc
